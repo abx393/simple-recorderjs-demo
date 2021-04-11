@@ -1,5 +1,6 @@
 # Simple Recorder.js demo
-A simple HTML5/JS demo that uses [Recorder.js](https://github.com/mattdiamond/Recorderjs) to record audio as wav and pause/resume the recording process. 
+
+A simple HTML5/JS demo that uses [Recorder.js](https://github.com/mattdiamond/Recorderjs) to record audio as wav and pause/resume the recording process.
 
 Update: I've added the ability to upload/POST the file using a plain `XMLHttpRequest`. I've seen many demos using `$.ajax()` but you need jQuery for that.
 
