@@ -1,3 +1,4 @@
+//webkitURL is deprecated but nevertheless
 URL = window.URL || window.webkitURL;
 
 let gumStream; //stream from getUserMedia()
@@ -23,24 +24,24 @@ function startRecording() {
   console.log("recordButton clicked");
 
   /*
-		Simple constraints object, for more advanced audio features see
-		https://addpipe.com/blog/audio-constraints-getusermedia/
-	*/
+      Simple constraints object, for more advanced audio features see
+      https://addpipe.com/blog/audio-constraints-getusermedia/
+  */
 
   let constraints = { audio: true, video: false };
 
   /*
-    	Disable the record button until we get a success or fail from getUserMedia()
-	*/
+     Disable the record button until we get a success or fail from getUserMedia()
+ */
 
   recordButton.disabled = true;
   stopButton.disabled = false;
   pauseButton.disabled = false;
 
   /*
-    	We're using the standard promise based getUserMedia()
-    	https://developer.mozilla.org/en-US/docs/Web/API/MediaDevices/getUserMedia
-	*/
+      We're using the standard promise based getUserMedia()
+      https://developer.mozilla.org/en-US/docs/Web/API/MediaDevices/getUserMedia
+  */
 
   navigator.mediaDevices
     .getUserMedia(constraints)
@@ -50,11 +51,11 @@ function startRecording() {
       );
 
       /*
-			create an audio context after getUserMedia is called
-			sampleRate might change after getUserMedia is called, like it does on macOS when recording through AirPods
-			the sampleRate defaults to the one set in your OS for your playback device
+        create an audio context after getUserMedia is called
+        sampleRate might change after getUserMedia is called, like it does on macOS when recording through AirPods
+        the sampleRate defaults to the one set in your OS for your playback device
 
-		*/
+    */
       audioContext = new AudioContext();
 
       //update the format
@@ -68,9 +69,9 @@ function startRecording() {
       input = audioContext.createMediaStreamSource(stream);
 
       /*
-			Create the Recorder object and configure to record mono sound (1 channel)
-			Recording 2 channels  will double the file size
-		*/
+        Create the Recorder object and configure to record mono sound (1 channel)
+        Recording 2 channels  will double the file size
+    */
       rec = new Recorder(input, { numChannels: 1 });
 
       //start the recording process
@@ -80,7 +81,6 @@ function startRecording() {
       console.log("Recording started");
     })
     .catch(function (err) {
-        console.error("getUserMedia fails.")
       //enable the record button if getUserMedia() fails
       recordButton.disabled = false;
       stopButton.disabled = true;
@@ -91,12 +91,12 @@ function startRecording() {
 function pauseRecording() {
   console.log("pauseButton clicked rec.recording=", rec.recording);
   if (rec.recording) {
-    // pause
+    //pause
     recording = false;
     rec.stop();
     pauseButton.innerHTML = "Resume";
   } else {
-    // resume
+    //resume
     recording = true;
     rec.record();
     pauseButton.innerHTML = "Pause";
@@ -111,17 +111,17 @@ function stopRecording() {
   recordButton.disabled = false;
   pauseButton.disabled = true;
 
-  // reset button just in case the recording is stopped while paused
+  //reset button just in case the recording is stopped while paused
   pauseButton.innerHTML = "Pause";
 
-  // tell the recorder to stop the recording
+  //tell the recorder to stop the recording
   recording = false;
   rec.stop();
 
-  // stop microphone access
+  //stop microphone access
   gumStream.getAudioTracks()[0].stop();
 
-  // create the wav blob and pass it on to createDownloadLink
+  //create the wav blob and pass it on to createDownloadLink
   rec.exportWAV(createDownloadLink);
 }
 
@@ -131,40 +131,38 @@ function createDownloadLink(blob) {
   let li = document.createElement("li");
   let link = document.createElement("a");
 
-  // name of .wav file to use during upload and download (without extendion)
-  let filename = new Date().toISOString();
+  //name of .wav file to use during upload and download (without extendion)
+  let filename = new Date().toDateString();
 
-  // add controls to the <audio> element
+  //add controls to the <audio> element
   au.controls = true;
   au.src = url;
 
-  // save to disk link
+  //save to disk link
   link.href = url;
   link.download = filename + ".wav"; //download forces the browser to donwload the file using the  filename
   link.innerHTML = "Save to disk";
 
-  // add the new audio element to li
+  //add the new audio element to li
   li.appendChild(au);
 
-  // add the filename to the li
+  //add the filename to the li
   li.appendChild(document.createTextNode(filename + ".wav "));
 
-  // add the save to disk link to li
+  //add the save to disk link to li
   li.appendChild(link);
 
-  // add the li element to the ol
+  //add the li element to the ol
   recordingsList.appendChild(li);
 }
 
 // record key presses
 window.onkeydown = function (e) {
   // ignore any key presses when audio is not recording
-  /*
   if (recording === false) {
     console.log("audio is not recording.");
     return;
   }
-  */
 
   let key = e.key;
   if (key === " ") {

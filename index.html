@@ -2,7 +2,7 @@
 <html>
   <head>
     <meta charset="UTF-8" />
-    <title>Key Press Data Collection</title>
+    <title>test demo</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
     <!-- Latest compiled and minified Bootstrap CSS -->
@@ -16,6 +16,7 @@
   </head>
   <body>
     <h1>Key Press Data Collection</h1>
+
     <div id="controls">
       <button id="recordButton">Record</button>
       <button id="pauseButton" disabled>Pause</button>
@@ -24,8 +25,9 @@
 
     <textarea id="textArea" rows="8" cols="50" readonly></textarea>
 
-    <h4>Recordings:</h4>
+    <h3>Recordings:</h3>
     <ol id="recordingsList"></ol>
+
     <!-- inserting these scripts at the end to be able to use all the elements in the DOM -->
     <script src="https://cdn.rawgit.com/mattdiamond/Recorderjs/08e7abd9/dist/recorder.js"></script>
     <script src="js/app.js"></script>
