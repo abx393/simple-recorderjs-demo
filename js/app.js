@@ -19,6 +19,9 @@ pauseButton.addEventListener("click", pauseRecording);
 
 let recording = false;
 
+let groundTruth = {};
+let startTime = new Date().getTime();
+
 function startRecording() {
   console.log("recordButton clicked");
 
@@ -129,9 +132,10 @@ function createDownloadLink(blob) {
   let au = document.createElement("audio");
   let li = document.createElement("li");
   let link = document.createElement("a");
+  let labelsLink = document.createElement("a");
 
-  // name of .wav file to use during upload and download (without extendion)
-  let filename = new Date().toDateString();
+  // name of .wav file to use during upload and download (without extension)
+  let filename = getCurrentTimeStamp();
 
   // add controls to the <audio> element
   au.controls = true;
@@ -140,19 +144,37 @@ function createDownloadLink(blob) {
   // save to disk link
   link.href = url;
   link.download = filename + ".wav"; // download forces the browser to download the file using the  filename
-  link.innerHTML = "Save to disk";
+  link.innerHTML = "Save audio";
+
+  // ground truth labels link
+  let dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(groundTruth));
+  labelsLink.href = dataStr;
+  labelsLink.download = filename + ".json"; // download forces the browser to download the file using the  filename
+  labelsLink.innerHTML = "Save labels";
 
   // add the new audio element to li
   li.appendChild(au);
 
   // add the filename to the li
-  li.appendChild(document.createTextNode(filename + ".wav "));
+  li.appendChild(document.createTextNode(filename + ".wav"));
 
-  // add the save to disk link to li
+  // add the save audio link to li
   li.appendChild(link);
+
+  // add the save labels link to li
+  li.appendChild(labelsLink);
 
   // add the li element to the ol
   recordingsList.appendChild(li);
+}
+
+// returns a timestamp for file naming
+function getCurrentTimeStamp() {
+  let d = new Date();
+
+  // d.getMonth() is 0-indexed
+  let ts = [d.getFullYear(), d.getMonth() + 1, d.getDate(), d.getHours(), d.getMinutes(), d.getSeconds()];
+  return ts.join("-");
 }
 
 // record key presses
@@ -168,6 +190,11 @@ window.onkeydown = function (e) {
     key = "Space";
   }
 
+  let currTime = new Date().getTime() - startTime;
+  console.log("currTime " + currTime);
+  groundTruth[currTime] = key;
+
   let textArea = document.getElementById("textArea");
   textArea.value = textArea.value + key;
 };
+
