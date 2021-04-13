@@ -1,4 +1,3 @@
-//webkitURL is deprecated but nevertheless
 URL = window.URL || window.webkitURL;
 
 let gumStream; //stream from getUserMedia()
@@ -13,7 +12,7 @@ let recordButton = document.getElementById("recordButton");
 let stopButton = document.getElementById("stopButton");
 let pauseButton = document.getElementById("pauseButton");
 
-//add events to those 2 buttons
+// add events to those 2 buttons
 recordButton.addEventListener("click", startRecording);
 stopButton.addEventListener("click", stopRecording);
 pauseButton.addEventListener("click", pauseRecording);
@@ -91,12 +90,12 @@ function startRecording() {
 function pauseRecording() {
   console.log("pauseButton clicked rec.recording=", rec.recording);
   if (rec.recording) {
-    //pause
+    // pause
     recording = false;
     rec.stop();
     pauseButton.innerHTML = "Resume";
   } else {
-    //resume
+    // resume
     recording = true;
     rec.record();
     pauseButton.innerHTML = "Pause";
@@ -106,22 +105,22 @@ function pauseRecording() {
 function stopRecording() {
   console.log("stopButton clicked");
 
-  //disable the stop button, enable the record too allow for new recordings
+  // disable the stop button, enable the record too allow for new recordings
   stopButton.disabled = true;
   recordButton.disabled = false;
   pauseButton.disabled = true;
 
-  //reset button just in case the recording is stopped while paused
+  // reset button just in case the recording is stopped while paused
   pauseButton.innerHTML = "Pause";
 
-  //tell the recorder to stop the recording
+  // tell the recorder to stop the recording
   recording = false;
   rec.stop();
 
-  //stop microphone access
+  // stop microphone access
   gumStream.getAudioTracks()[0].stop();
 
-  //create the wav blob and pass it on to createDownloadLink
+  // create the wav blob and pass it on to createDownloadLink
   rec.exportWAV(createDownloadLink);
 }
 
@@ -131,28 +130,28 @@ function createDownloadLink(blob) {
   let li = document.createElement("li");
   let link = document.createElement("a");
 
-  //name of .wav file to use during upload and download (without extendion)
+  // name of .wav file to use during upload and download (without extendion)
   let filename = new Date().toDateString();
 
-  //add controls to the <audio> element
+  // add controls to the <audio> element
   au.controls = true;
   au.src = url;
 
-  //save to disk link
+  // save to disk link
   link.href = url;
-  link.download = filename + ".wav"; //download forces the browser to donwload the file using the  filename
+  link.download = filename + ".wav"; // download forces the browser to download the file using the  filename
   link.innerHTML = "Save to disk";
 
-  //add the new audio element to li
+  // add the new audio element to li
   li.appendChild(au);
 
-  //add the filename to the li
+  // add the filename to the li
   li.appendChild(document.createTextNode(filename + ".wav "));
 
-  //add the save to disk link to li
+  // add the save to disk link to li
   li.appendChild(link);
 
-  //add the li element to the ol
+  // add the li element to the ol
   recordingsList.appendChild(li);
 }
 
