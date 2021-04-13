@@ -10,20 +10,19 @@ let audioContext; //audio context to help us record
 
 let recordButton = document.getElementById("recordButton");
 let stopButton = document.getElementById("stopButton");
-let pauseButton = document.getElementById("pauseButton");
 
 // add events to those 2 buttons
 recordButton.addEventListener("click", startRecording);
 stopButton.addEventListener("click", stopRecording);
-pauseButton.addEventListener("click", pauseRecording);
 
 let recording = false;
+let startTime;
 
 let groundTruth = {};
-let startTime = new Date().getTime();
 
 function startRecording() {
   console.log("recordButton clicked");
+  startTime = new Date().getTime();
 
   // clear text field
   let textArea = document.getElementById("textArea");
@@ -45,7 +44,6 @@ function startRecording() {
 
   recordButton.disabled = true;
   stopButton.disabled = false;
-  pauseButton.disabled = false;
 
   /*
       We're using the standard promise based getUserMedia()
@@ -93,23 +91,7 @@ function startRecording() {
       //enable the record button if getUserMedia() fails
       recordButton.disabled = false;
       stopButton.disabled = true;
-      pauseButton.disabled = true;
     });
-}
-
-function pauseRecording() {
-  console.log("pauseButton clicked rec.recording=", rec.recording);
-  if (rec.recording) {
-    // pause
-    recording = false;
-    rec.stop();
-    pauseButton.innerHTML = "Resume";
-  } else {
-    // resume
-    recording = true;
-    rec.record();
-    pauseButton.innerHTML = "Pause";
-  }
 }
 
 function stopRecording() {
@@ -118,10 +100,6 @@ function stopRecording() {
   // disable the stop button, enable the record too allow for new recordings
   stopButton.disabled = true;
   recordButton.disabled = false;
-  pauseButton.disabled = true;
-
-  // reset button just in case the recording is stopped while paused
-  pauseButton.innerHTML = "Pause";
 
   // tell the recorder to stop the recording
   recording = false;
