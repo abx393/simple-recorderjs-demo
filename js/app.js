@@ -25,6 +25,13 @@ let startTime = new Date().getTime();
 function startRecording() {
   console.log("recordButton clicked");
 
+  // clear text field
+  let textArea = document.getElementById("textArea");
+  textArea.value = "";
+
+  // clear any ground truth key data left over from previous recording
+  groundTruth = {};
+
   /*
       Simple constraints object, for more advanced audio features see
       https://addpipe.com/blog/audio-constraints-getusermedia/
